@@ -1,1 +1,3 @@
-# assessments_bot
+# pip install selenium
+# pip install -U --pre aiogram
+# pip install environs
