@@ -66,13 +66,3 @@ def get_marks(login: str, password: str):
             return None
     
 
-
-
-
-
-
-
-
-
-if __name__ == '__main__':
-    get_marks(login='МамонтовМ', password='m05a04m06')
