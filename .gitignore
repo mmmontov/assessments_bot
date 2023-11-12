@@ -1,7 +1,9 @@
 .env
+.gitignore 
 
 venv/
 .mypy_cache/
 .vscode/
 __pycache__/
 .git/
+marks_photo/marks.png
