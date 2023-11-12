@@ -5,7 +5,8 @@ from selenium.webdriver.common.by import By
 def get_marks(login: str, password: str):
     options_chrome = webdriver.ChromeOptions()
     school = 'СОШ 60'
-    # options_chrome.add_argument('--headless')
+    options_chrome.add_argument('--headless')
+    options_chrome.add_argument('--window-size=1280,1200')
 
     with webdriver.Chrome(options=options_chrome) as browser:
         url = 'https://sgo.prim-edu.ru/angular/school/main/'
@@ -36,7 +37,7 @@ def get_marks(login: str, password: str):
             reports_click = browser.find_elements(By.XPATH, '//li')[9].click()
             time.sleep(7)
             studenttotal = browser.find_element(By.XPATH, "//a[@ng-href='studenttotal']").click()
-            time.sleep(5)
+            time.sleep(5)     
             create_marks = browser.find_element(By.XPATH, "//button[@title='Сформировать']").click()
             time.sleep(10)
         except:
@@ -60,6 +61,7 @@ def get_marks(login: str, password: str):
                     marks = ['нет оценок']    
 
                 student_marks[name] = {'marks': marks, 'avg': avg}
+                browser.get_screenshot_as_file('marks_photo/marks.png')
                 # print(f'Предмет: {name}\nОценки: {" ".join(marks)}\nСредний бал: {avg}\n')
             return student_marks
         except:
@@ -67,12 +69,3 @@ def get_marks(login: str, password: str):
     
 
 
-
-
-
-
-
-
-
-if __name__ == '__main__':
-    get_marks(login='МамонтовМ', password='m05a04m06')

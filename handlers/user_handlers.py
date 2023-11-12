@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram.filters import Command, CommandStart
-from aiogram.types import Message
+from aiogram.types import Message, FSInputFile
 from lexicon.lexicon import LEXICON_RU
 from assessments_parsing.assesments_parsing import get_marks
 
@@ -27,6 +27,10 @@ async def process_get_student_marks(message: Message):
     if marks_table:
         format_marks = [f'<b>предмет:</b> {sub}\n<b>Оценки:</b> {" ".join(marks["marks"])}\n<b>Средний балл:</b> {marks["avg"]}\n' for sub, marks in marks_table.items()]
         await message.answer(text="\n".join(format_marks))
+        
+        photo = FSInputFile('marks_photo/marks.png')
+        await message.answer_photo(photo=photo)
+        print('фото отправлено')
     else:
         await message.answer(text=LEXICON_RU['site_error'])
     
