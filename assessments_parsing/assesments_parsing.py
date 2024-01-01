@@ -12,8 +12,8 @@ def wait(browser: webdriver.Chrome):
 def get_marks(login: str, password: str):
     options_chrome = webdriver.ChromeOptions()
     school = 'СОШ 60'
-    # options_chrome.add_argument('--headless')
-    options_chrome.add_argument('--window-size=1280,1200')
+    options_chrome.add_argument('--headless')
+    options_chrome.add_argument('--window-size=1900,1000')
 
     with webdriver.Chrome(options=options_chrome) as browser:
         url = 'https://sgo.prim-edu.ru/angular/school/main/'
@@ -22,13 +22,14 @@ def get_marks(login: str, password: str):
         # вход в аккаунт =======================================================================
         browser.find_element(By.CLASS_NAME, 'select2-selection__arrow').click()
         browser.find_element(By.CLASS_NAME, 'select2-search__field').send_keys(school)
-        time.sleep(1)
+        time.sleep(1.5)
         browser.find_element(By.CLASS_NAME, 'select2-results').click()  
         browser.find_element(By.NAME, 'loginname').send_keys(login)
         browser.find_element(By.NAME, 'password').send_keys(password)  
         time.sleep(1)
         browser.find_element(By.CLASS_NAME, 'primary-button').click()
         wait(browser)
+        print('вход в аккаунт')
 
         # пропуск страницы с предупреждением ===================================================
         try:
@@ -38,6 +39,7 @@ def get_marks(login: str, password: str):
             print('небыло одновременно запущенных сессий')
             wait(browser)
         wait(browser)
+        print('пропустил предупреждение')
 
         # переход на страницу с оценками =======================================================
         try:
@@ -46,9 +48,11 @@ def get_marks(login: str, password: str):
             browser.find_element(By.XPATH, "//a[@ng-href='studenttotal']").click()
             wait(browser)    
             browser.find_element(By.XPATH, "//button[@title='Сформировать']").click()
-            time.sleep(10)
+            time.sleep(7)
+            browser.execute_script('window.scrollBy(0, 600)')
         except:
             return None
+        print('перешел на страницу с оценками и сформировал')
         
         # парсинг оценок =======================================================================
         student_marks = {}
@@ -70,6 +74,7 @@ def get_marks(login: str, password: str):
                 student_marks[name] = {'marks': marks, 'avg': avg}
                 browser.get_screenshot_as_file('marks_photo/marks.png')
                 # print(f'Предмет: {name}\nОценки: {" ".join(marks)}\nСредний бал: {avg}\n')
+            # print(student_marks)
             return student_marks
         except:
             return None
